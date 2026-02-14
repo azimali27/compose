@@ -13,7 +13,7 @@ services:
     image: supabase/studio:2025.05.19-sha-3487831
     restart: unless-stopped
     ports:
-    - "13000:3000"
+      - "13000:3000"
     healthcheck:
       test:
         [
@@ -357,6 +357,8 @@ services:
       # Comment out everything below this point if you are using an external Postgres database
   db:
     image: supabase/postgres:15.8.1.060
+    ports: 
+      - "5432:5432"
     restart: unless-stopped
     volumes:
       - ./volumes/db/realtime.sql:/docker-entrypoint-initdb.d/migrations/99-realtime.sql:Z
