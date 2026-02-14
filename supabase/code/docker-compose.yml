@@ -33,6 +33,18 @@ services:
     depends_on:
       analytics:
         condition: service_healthy
+    
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.supabase-studio.rule=Host(`studio.example.com`)"
+      - "traefik.http.routers.supabase-studio.entrypoints=websecure"
+      - "traefik.http.routers.supabase-studio.tls=true"
+      - "traefik.http.services.supabase-studio.loadbalancer.server.port=3000"
+  
+    networks:
+      - helpmebot_supabase_default
+      - easypanel
+    
     environment:
       STUDIO_PG_META_URL: http://meta:8080
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -54,16 +66,7 @@ services:
       NEXT_ANALYTICS_BACKEND_PROVIDER: postgres
       # Uncomment to use Big Query backend for analytics
       # NEXT_ANALYTICS_BACKEND_PROVIDER: bigquery
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.supabase-studio.rule=Host(`studio.example.com`)"
-      - "traefik.http.routers.supabase-studio.entrypoints=websecure"
-      - "traefik.http.routers.supabase-studio.tls=true"
-      - "traefik.http.services.supabase-studio.loadbalancer.server.port=3000"
-    networks:
-      - helpmebot_supabase_default
-      - easypanel
-
+    
   kong:
     image: kong:2.8.1
     ports:
