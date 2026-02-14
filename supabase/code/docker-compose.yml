@@ -12,6 +12,8 @@ services:
   studio:
     image: supabase/studio:2025.05.19-sha-3487831
     restart: unless-stopped
+    ports:
+    - "127.0.0.1:13000:3000"
     healthcheck:
       test:
         [
