@@ -9,6 +9,10 @@ name: supabase
 
 services:
 
+  networks:
+     easypanel:
+     external: true
+
   studio:
     image: supabase/studio:2025.05.19-sha-3487831
     restart: unless-stopped
@@ -50,6 +54,15 @@ services:
       NEXT_ANALYTICS_BACKEND_PROVIDER: postgres
       # Uncomment to use Big Query backend for analytics
       # NEXT_ANALYTICS_BACKEND_PROVIDER: bigquery
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.supabase-studio.rule=Host(`studio.example.com`)"
+      - "traefik.http.routers.supabase-studio.entrypoints=websecure"
+      - "traefik.http.routers.supabase-studio.tls=true"
+      - "traefik.http.services.supabase-studio.loadbalancer.server.port=3000"
+    networks:
+      - helpmebot_supabase_default
+      - easypanel
 
   kong:
     image: kong:2.8.1
